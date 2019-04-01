@@ -2,7 +2,25 @@
 
 This is a simple text based RPG built for studying purposes.
 
-Once you run the application you will be asked to enter a command.
+## Building the application
+
+It is a [maven](http://maven.apache.org/), it must be installed. 
+
+Go to the project directory and type the following command:
+
+```
+mvn clean compile
+```
+
+## Running the application
+
+After building the application, type the command bellow:
+
+```
+mvn exec:java
+```
+
+Once the application starts, you will be asked to enter a command.
 
 The following commands are available:
 
