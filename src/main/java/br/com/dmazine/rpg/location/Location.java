@@ -1,7 +1,7 @@
 package br.com.dmazine.rpg.location;
 
 import br.com.dmazine.rpg.Entity;
-import br.com.dmazine.rpg.character.Enemy;
+import br.com.dmazine.rpg.character.Character;
 import br.com.dmazine.rpg.item.Item;
 
 public class Location extends Entity {
@@ -20,7 +20,7 @@ public class Location extends Entity {
 
     private Item item;
 
-    private Enemy enemy;
+    private Character enemy;
 
     public Location(String id, String name) {
         super(id);
@@ -83,11 +83,11 @@ public class Location extends Entity {
         return item;
     }
 
-    public Enemy getEnemy() {
+    public Character getEnemy() {
         return enemy;
     }
 
-    public void setEnemy(Enemy enemy) {
+    public void setEnemy(Character enemy) {
         this.enemy = enemy;
     }
 

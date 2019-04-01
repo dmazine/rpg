@@ -3,19 +3,19 @@ package br.com.dmazine.rpg.character;
 import br.com.dmazine.rpg.Entity;
 import br.com.dmazine.rpg.damage.DamageCalculationStrategy;
 import br.com.dmazine.rpg.damage.DefaultDamageCalculationStrategy;
-import br.com.dmazine.rpg.item.Weapon;
+import br.com.dmazine.rpg.weapon.Weapon;
 
-public abstract class Character extends Entity {
+public class Character extends Entity {
 
     private String name;
+
+    private String description;
 
     private int health = 5;
 
     private int strength = 1;
 
     private int experience = 1;
-
-    private Weapon weapon;
 
     private DamageCalculationStrategy damageCalculationStrategy = new DefaultDamageCalculationStrategy();
 
@@ -30,6 +30,14 @@ public abstract class Character extends Entity {
 
     private void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getHealth() {
@@ -72,14 +80,6 @@ public abstract class Character extends Entity {
         this.experience += points;
     }
 
-    public Weapon getWeapon() {
-        return weapon;
-    }
-
-    public void setWeapon(Weapon weapon) {
-        this.weapon = weapon;
-    }
-
     public DamageCalculationStrategy getDamageCalculationStrategy() {
         return damageCalculationStrategy;
     }
@@ -97,13 +97,16 @@ public abstract class Character extends Entity {
     }
 
     public void attack(Character target) {
-        target.decreaseHealth(damageCalculationStrategy.calculateDamage(this, target));
+        attack(target, null);
+    }
+
+    public void attack(Character target, Weapon weapon) {
+        target.decreaseHealth(damageCalculationStrategy.calculateDamage(this, target, weapon));
     }
 
     public String getStatus() {
         return new StringBuilder(name).append(": health=").append(health).append(", strength=").append(strength)
-                .append(", experience=").append(experience).append(", weapon=").append(weapon != null ? weapon.getId() : "none")
-                .toString();
+                .append(", experience=").append(experience).append(", weapon=").toString();
     }
 
 }

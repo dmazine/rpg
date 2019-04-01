@@ -1,7 +1,7 @@
 package br.com.dmazine.rpg;
 
-import br.com.dmazine.rpg.character.Player;
-import br.com.dmazine.rpg.location.World;
+import br.com.dmazine.rpg.character.Character;
+import br.com.dmazine.rpg.world.World;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -24,8 +24,12 @@ public class GameTest {
     @Test
     public void deadPlayer_shouldEndTheGame() {
         final World world = mock(World.class);
+
+        final Character character = mock(Character.class);
+        when(character.isDead()).thenReturn(true);
+
         final Player player = mock(Player.class);
-        when(player.isDead()).thenReturn(true);
+        when(player.getCharacter()).thenReturn(character);
 
         final Game game = new Game(world, player);
 

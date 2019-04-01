@@ -1,7 +1,7 @@
 package br.com.dmazine.rpg.item;
 
 import br.com.dmazine.rpg.Entity;
-import br.com.dmazine.rpg.character.Player;
+import br.com.dmazine.rpg.Player;
 
 public abstract class Item extends Entity {
 

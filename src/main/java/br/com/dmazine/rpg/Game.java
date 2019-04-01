@@ -1,7 +1,6 @@
 package br.com.dmazine.rpg;
 
-import br.com.dmazine.rpg.character.Player;
-import br.com.dmazine.rpg.location.World;
+import br.com.dmazine.rpg.world.World;
 
 import java.util.UUID;
 
@@ -49,7 +48,7 @@ public class Game extends Entity {
     }
 
     public boolean isEnded() {
-        return isQuitted() || getPlayer().isDead();
+        return isQuitted() || getPlayer().getCharacter().isDead();
     }
 
 }

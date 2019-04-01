@@ -1,9 +1,10 @@
 package br.com.dmazine.rpg.character;
 
+import br.com.dmazine.rpg.Player;
 import br.com.dmazine.rpg.exception.InvalidMovementException;
 import br.com.dmazine.rpg.exception.WeaponNotFoundException;
-import br.com.dmazine.rpg.item.MagicPotion;
-import br.com.dmazine.rpg.item.Weapon;
+import br.com.dmazine.rpg.item.Potion;
+import br.com.dmazine.rpg.weapon.Weapon;
 import br.com.dmazine.rpg.location.Location;
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,7 +14,9 @@ public class PlayerTest {
     @Test(expected = InvalidMovementException.class)
     public void movingWhenThereIsNoPath_shouldFail() {
         final Location greatHall = new Location("greatHall", "The Great Hall");
-        final Player player = new Player("player1", "Player #1", greatHall);
+
+        final Character character = new Character("knight", "Knight");
+        final Player player = new Player(character, greatHall);
 
         player.moveNorth();
     }
@@ -25,7 +28,8 @@ public class PlayerTest {
         final Location greatHall = new Location("greatHall", "The Great Hall");
         greatHall.setLocationToNorth(throneRoom);
 
-        final Player player = new Player("player1", "Player #1", greatHall);
+        final Character character = new Character("knight", "Knight");
+        final Player player = new Player(character, greatHall);
         player.moveNorth();
 
         Assert.assertEquals(throneRoom, player.getLocation());
@@ -38,7 +42,8 @@ public class PlayerTest {
         final Location greatHall = new Location("greatHall", "The Great Hall");
         greatHall.setLocationToSouth(throneRoom);
 
-        final Player player = new Player("player1", "Player #1", greatHall);
+        final Character character = new Character("knight", "Knight");
+        final Player player = new Player(character, greatHall);
         player.moveSouth();
 
         Assert.assertEquals(throneRoom, player.getLocation());
@@ -51,7 +56,8 @@ public class PlayerTest {
         final Location greatHall = new Location("greatHall", "The Great Hall");
         greatHall.setLocationToEast(throneRoom);
 
-        final Player player = new Player("player1", "Player #1", greatHall);
+        final Character character = new Character("knight", "Knight");
+        final Player player = new Player(character, greatHall);
         player.moveEast();
 
         Assert.assertEquals(throneRoom, player.getLocation());
@@ -64,7 +70,8 @@ public class PlayerTest {
         final Location greatHall = new Location("greatHall", "The Great Hall");
         greatHall.setLocationToWest(throneRoom);
 
-        final Player player = new Player("player1", "Player #1", greatHall);
+        final Character character = new Character("knight", "Knight");
+        final Player player = new Player(character, greatHall);
         player.moveWest();
 
         Assert.assertEquals(throneRoom, player.getLocation());
@@ -76,9 +83,10 @@ public class PlayerTest {
 
         final Location greatHall = new Location("greatHall", "The Great Hall");
         greatHall.setLocationToNorth(throneRoom);
-        greatHall.setEnemy(new Enemy("knightSkeleton", "Knight Skeleton"));
+        greatHall.setEnemy(new Character("knightSkeleton", "Knight Skeleton"));
 
-        final Player player = new Player("player1", "Player #1", greatHall);
+        final Character character = new Character("knight", "Knight");
+        final Player player = new Player(character, greatHall);
         player.moveNorth();
     }
 
@@ -88,23 +96,25 @@ public class PlayerTest {
         final int magicPotionStrengthPoints = 4;
 
         final Location greatHall = new Location("greatHall", "The Great Hall");
-        greatHall.setItem(new MagicPotion("magicPotion", "Magic Potion", magicPotionHealthPoints, magicPotionStrengthPoints));
+        greatHall.setItem(new Potion("magicPotion", "Magic Potion", magicPotionHealthPoints, magicPotionStrengthPoints));
 
-        final Player player = new Player("player1", "Player #1", greatHall);
-        final int oldHealth = player.getHealth();
-        final int oldStrength = player.getStrength();
+        final Character character = new Character("knight", "Knight");
+        final Player player = new Player(character, greatHall);
+        final int oldHealth = player.getCharacter().getHealth();
+        final int oldStrength = player.getCharacter().getStrength();
 
         player.collectItems();
 
-        Assert.assertEquals(oldHealth + magicPotionHealthPoints, player.getHealth());
-        Assert.assertEquals(oldStrength + magicPotionStrengthPoints, player.getStrength());
+        Assert.assertEquals(oldHealth + magicPotionHealthPoints, player.getCharacter().getHealth());
+        Assert.assertEquals(oldStrength + magicPotionStrengthPoints, player.getCharacter().getStrength());
     }
 
     @Test(expected = WeaponNotFoundException.class)
     public void selectingANonExistingWeapon_shouldFail() {
         final Location greatHall = new Location("greatHall", "The Great Hall");
 
-        final Player player = new Player("player1", "Player #1", greatHall);
+        final Character character = new Character("knight", "Knight");
+        final Player player = new Player(character, greatHall);
         player.selectWeapon("sword");
     }
 
@@ -115,7 +125,8 @@ public class PlayerTest {
         final Weapon weapon = new Weapon("sword", "Sword", 1);
         greatHall.setItem(weapon);
 
-        final Player player = new Player("player1", "Player #1", greatHall);
+        final Character character = new Character("knight", "Knight");
+        final Player player = new Player(character, greatHall);
         player.collectItems();
 
         player.selectWeapon("sword");

@@ -1,9 +1,12 @@
 package br.com.dmazine.rpg.damage;
 
+import br.com.dmazine.rpg.character.Character;
+import br.com.dmazine.rpg.weapon.Weapon;
+
 import java.io.Serializable;
 
 public interface DamageCalculationStrategy extends Serializable {
 
-    int calculateDamage(br.com.dmazine.rpg.character.Character attacker, br.com.dmazine.rpg.character.Character target);
+    int calculateDamage(Character attacker, Character target, Weapon weapon);
 
 }

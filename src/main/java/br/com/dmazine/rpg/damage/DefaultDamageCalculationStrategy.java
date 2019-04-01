@@ -1,24 +1,28 @@
 package br.com.dmazine.rpg.damage;
 
-import br.com.dmazine.rpg.item.Weapon;
+import br.com.dmazine.rpg.character.Character;
+import br.com.dmazine.rpg.weapon.Weapon;
 
 public class DefaultDamageCalculationStrategy implements DamageCalculationStrategy {
 
     @Override
-    public int calculateDamage(br.com.dmazine.rpg.character.Character attacker, br.com.dmazine.rpg.character.Character target) {
-        return calculateDamage(getAttackPoints(attacker), getWeaponPoints(attacker), getDefensePoints(target));
+    public int calculateDamage(Character attacker, Character target, Weapon weapon) {
+        return calculateDamage(getAttackPoints(attacker), getWeaponPoints(weapon), getDefensePoints(target));
     }
 
-    private int getAttackPoints(br.com.dmazine.rpg.character.Character character) {
+    private int getAttackPoints(Character character) {
         return character.getStrength() * character.getExperience();
     }
 
-    private int getWeaponPoints(br.com.dmazine.rpg.character.Character character) {
-        final Weapon weapon = character.getWeapon();
-        return (weapon != null) ? weapon.getDamage() : 0;
+    private int getWeaponPoints(Weapon weapon) {
+        if (weapon == null) {
+            return 0;
+        }
+
+        return weapon.getDamage();
     }
 
-    private int getDefensePoints(br.com.dmazine.rpg.character.Character character) {
+    private int getDefensePoints(Character character) {
         return (int) (Math.random() * ((character.getStrength() * character.getExperience()) + 1));
     }
 

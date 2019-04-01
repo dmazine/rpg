@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import static org.mockito.Mockito.*;
 
-public class ShowStatusCommandTest {
+public class CollectItemsCommandTest {
 
     @Test
     public void executingComand_shouldCallApplication() {
@@ -15,10 +15,10 @@ public class ShowStatusCommandTest {
         final Game game = mock(Game.class);
         when(game.getPlayer()).thenReturn(player);
 
-        final ShowStatusCommand command = new ShowStatusCommand(game);
+        final CollectItemsCommand command = new CollectItemsCommand(game);
         command.execute();
 
-        verify(player, times(1)).showStatus();
+        verify(player, times(1)).collectItems();
     }
 
 }

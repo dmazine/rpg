@@ -11,10 +11,13 @@ public class NewGameCommandTest {
     public void executingComand_shouldCallApplication() {
         final Application application = mock(Application.class);
 
-        final NewGameCommand command = new NewGameCommand(application);
+        final String worldId = "darkCastle";
+        final String characterId = "goldenKnight";
+
+        final NewGameCommand command = new NewGameCommand(application, worldId, characterId);
         command.execute();
 
-        verify(application, times(1)).newGame();
+        verify(application, times(1)).startGame(worldId, characterId);
     }
 
 }

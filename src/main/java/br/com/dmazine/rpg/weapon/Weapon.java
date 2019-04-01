@@ -1,6 +1,7 @@
-package br.com.dmazine.rpg.item;
+package br.com.dmazine.rpg.weapon;
 
-import br.com.dmazine.rpg.character.Player;
+import br.com.dmazine.rpg.Player;
+import br.com.dmazine.rpg.item.Item;
 
 public class Weapon extends Item {
 

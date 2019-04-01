@@ -1,29 +1,43 @@
-package br.com.dmazine.rpg.character;
+package br.com.dmazine.rpg;
 
-import br.com.dmazine.rpg.Console;
+import br.com.dmazine.rpg.character.Character;
 import br.com.dmazine.rpg.exception.IllegalAttackException;
 import br.com.dmazine.rpg.exception.InvalidMovementException;
 import br.com.dmazine.rpg.exception.WeaponNotFoundException;
 import br.com.dmazine.rpg.experience.DefaultExperienceGainCalculationStrategy;
 import br.com.dmazine.rpg.experience.ExperienceGainCalculationStrategy;
 import br.com.dmazine.rpg.item.Item;
-import br.com.dmazine.rpg.item.Weapon;
+import br.com.dmazine.rpg.item.Potion;
 import br.com.dmazine.rpg.location.Location;
+import br.com.dmazine.rpg.weapon.Weapon;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Player extends Character {
+public class Player implements Serializable {
+
+    private Character character;
 
     private Location location;
 
-    private ExperienceGainCalculationStrategy experienceGainCalculationStrategy = new DefaultExperienceGainCalculationStrategy(1, 2);
+    private Weapon weapon;
 
     private Map<String, Weapon> weapons = new HashMap<>();
 
-    public Player(String id, String name, Location location) {
-        super(id, name);
+    private ExperienceGainCalculationStrategy experienceGainCalculationStrategy = new DefaultExperienceGainCalculationStrategy(1, 2);
+
+    public Player(Character character, Location location) {
+        setCharacter(character);
         setLocation(location);
+    }
+
+    public Character getCharacter() {
+        return character;
+    }
+
+    private void setCharacter(Character character) {
+        this.character = character;
     }
 
     public Location getLocation() {
@@ -32,6 +46,14 @@ public class Player extends Character {
 
     private void setLocation(Location location) {
         this.location = location;
+    }
+
+    public Weapon getWeapon() {
+        return weapon;
+    }
+
+    public void setWeapon(Weapon weapon) {
+        this.weapon = weapon;
     }
 
     public ExperienceGainCalculationStrategy getExperienceGainCalculationStrategy() {
@@ -78,6 +100,11 @@ public class Player extends Character {
         showStatus();
     }
 
+    public void takePotion(Potion potion) {
+        getCharacter().increaseHealth(potion.getHealthPoints());
+        getCharacter().increaseStrength(potion.getStrengthPoints());
+    }
+
     public void addWeapon(Weapon weapon) {
         weapons.put(weapon.getId(), weapon);
         setWeapon(weapon);
@@ -94,23 +121,23 @@ public class Player extends Character {
     }
 
     public void attack() {
-        final Enemy enemy = getLocation().getEnemy();
+        final Character enemy = getLocation().getEnemy();
         if (enemy == null) {
             throw new IllegalAttackException("No enemy to attack here");
         }
 
-        attack(enemy);
+        character.attack(enemy, weapon);
 
         if (enemy.isDead()) {
             getLocation().setEnemy(null);
-            increaseExperience(experienceGainCalculationStrategy.calculateExperienceGain());
+            character.increaseExperience(experienceGainCalculationStrategy.calculateExperienceGain());
 
             Console.writeln("The enemy was defeated!", Console.Color.RED);
             return;
         }
 
-        enemy.attack(this);
-        if (isDead()) {
+        enemy.attack(character);
+        if (character.isDead()) {
             Console.writeln("You were killed by the enemy!", Console.Color.RED);
             Console.writeln("Game Over", Console.Color.RED);
             return;
@@ -128,7 +155,7 @@ public class Player extends Character {
             Console.writeln(item.getDescription(), Console.Color.YELLOW);
         }
 
-        final Enemy enemy = getLocation().getEnemy();
+        final Character enemy = getLocation().getEnemy();
         if (enemy != null) {
             Console.writeln(enemy.getDescription(), Console.Color.RED);
             showStatus();
@@ -140,7 +167,7 @@ public class Player extends Character {
     public void showStatus() {
         Console.writeln(getStatus(), Console.Color.BLUE);
 
-        final Enemy enemy = getLocation().getEnemy();
+        final Character enemy = getLocation().getEnemy();
         if (enemy != null) {
             Console.writeln(enemy.getStatus(), Console.Color.CYAN);
         }
@@ -148,9 +175,9 @@ public class Player extends Character {
         Console.writeln();
     }
 
-    @Override
     public String getStatus() {
-        return new StringBuilder(super.getStatus()).append(", weapons=").append(weapons.keySet()).toString();
+        return new StringBuilder(getCharacter().getStatus()).append(weapon != null ? weapon.getId() : "none")
+                .append(", weapons=").append(weapons.keySet()).toString();
     }
 
 }

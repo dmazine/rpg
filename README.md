@@ -1,4 +1,4 @@
-# Text Based Role Player Game
+# Text Based Role Playing Game
 
 This is a simple text based RPG built for studying purposes.
 
@@ -8,13 +8,15 @@ The following commands are available:
 
 * `help` Shows these help message.
 * `exit` Exits from the application.
-* `new` Starts a new game.
-* `load <name>` Loads a saved the game.
-* `save <name>` Saves the game.
-* `quit Quits the game
-* `move [north|south|east|west]` Moves to the specified direction.
-* `collect` Collect the available items.
-* `use <weapon>` Select the weapon to use.
-* `status` Displays the player and enemy status.
-* `attack`  Attacks the enemy.
-
+* `world list` List the available worlds.
+* `character list` Lists the available characters.
+* `character new <name>` Creates a new character.
+* `game new <world> <character>` Starts a new game.
+* `game load <name>` Loads a saved the game.
+* `game save <name>` Saves the game.
+* `game status` Displays the game status.
+* `game quit` Quits the game.
+* `player move [north|south|east|west]` Moves to the specified direction.
+* `player collect` Collect the available items.
+* `player use <weapon>` Select the weapon to use.
+* `player attack ` Attacks the enemy.

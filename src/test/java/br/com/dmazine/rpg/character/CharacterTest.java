@@ -1,6 +1,5 @@
 package br.com.dmazine.rpg.character;
 
-import br.com.dmazine.rpg.damage.DefaultDamageCalculationStrategy;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -13,7 +12,7 @@ public class CharacterTest {
 
     @Test
     public void increaseHealth_shouldIncreaseTheHealthAmount() {
-        final Character character = mock(Character.class, Mockito.CALLS_REAL_METHODS);
+        final Character character = new Character("knight", "Knight");
 
         final int oldAmount = character.getHealth();
         character.increaseHealth(1);
@@ -23,7 +22,7 @@ public class CharacterTest {
 
     @Test
     public void increaseStrength_shouldIncreaseTheStrengthAmount() {
-        final Character character = mock(Character.class, Mockito.CALLS_REAL_METHODS);
+        final Character character = new Character("knight", "Knight");
 
         final int oldAmount = character.getStrength();
         character.increaseStrength(1);
@@ -33,7 +32,7 @@ public class CharacterTest {
 
     @Test
     public void increaseExperience_shouldIncreaseTheExperienceAmount() {
-        final Character character = mock(Character.class, Mockito.CALLS_REAL_METHODS);
+        final Character character = new Character("knight", "Knight");
 
         final int oldAmount = character.getExperience();
         character.increaseExperience(1);
@@ -43,7 +42,7 @@ public class CharacterTest {
 
     @Test
     public void healthyCharacter_shouldBeAlive() {
-        final Character character = mock(Character.class, Mockito.CALLS_REAL_METHODS);
+        final Character character = new Character("knight", "Knight");
         character.setHealth(10);
 
         Assert.assertTrue(character.isAlive());
@@ -51,7 +50,7 @@ public class CharacterTest {
 
     @Test
     public void unhealthyCharacter_shouldBeDead() {
-        final Character character = mock(Character.class, Mockito.CALLS_REAL_METHODS);
+        final Character character = new Character("knight", "Knight");
         character.setHealth(0);
 
         Assert.assertTrue(character.isDead());
@@ -59,16 +58,13 @@ public class CharacterTest {
 
     @Test
     public void attackingCharacter_shouldNotIncreaseItsHealth() {
-        final Character character = mock(Character.class, Mockito.CALLS_REAL_METHODS);
-        character.setStrength(2);
-        character.setExperience(1);
-        character.setDamageCalculationStrategy(new DefaultDamageCalculationStrategy());
+        final Character atacker = new Character("knight", "Knight");
 
-        final Character targetCharacter = mock(Character.class, Mockito.CALLS_REAL_METHODS);
-        character.attack(targetCharacter);
+        final Character target = mock(Character.class, Mockito.CALLS_REAL_METHODS);
+        atacker.attack(target);
 
         final ArgumentCaptor<Integer> argumentCaptor = ArgumentCaptor.forClass(Integer.class);
-        verify(targetCharacter).decreaseHealth(argumentCaptor.capture());
+        verify(target).decreaseHealth(argumentCaptor.capture());
 
         Assert.assertTrue(argumentCaptor.getValue() >= 0);
     }

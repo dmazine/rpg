@@ -25,9 +25,9 @@ public class ApplicationTest {
     }
 
     @Test
-    public void newApplication_shouldHaveAGameAfterNewGameCommand() {
+    public void newApplication_shouldHaveAGameAfterStartGameCommand() {
         final Application application = new Application();
-        application.newGame();
+        application.startGame("darkCastle", "goldenKnight");
 
         Assert.assertNotNull(application.getGame());
     }
@@ -35,7 +35,7 @@ public class ApplicationTest {
     @Test
     public void savedGame_shouldBeLoaded() {
         final Application application = new Application();
-        application.newGame();
+        application.startGame("darkCastle", "goldenKnight");
 
         application.saveGame("sample");
         application.loadGame("sample");

@@ -1,7 +1,7 @@
 package br.com.dmazine.rpg.command.game;
 
 import br.com.dmazine.rpg.Game;
-import br.com.dmazine.rpg.character.Player;
+import br.com.dmazine.rpg.Player;
 import org.junit.Test;
 
 import static org.mockito.Mockito.*;

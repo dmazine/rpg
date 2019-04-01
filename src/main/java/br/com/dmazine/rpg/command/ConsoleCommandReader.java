@@ -36,7 +36,7 @@ public class ConsoleCommandReader implements CommandReader {
     }
 
     private String[] readInput() {
-        return getScanner().nextLine().toLowerCase().split(" +");
+        return getScanner().nextLine().split(" +");
     }
 
     private Command createCommand(String[] tokens) {
@@ -50,60 +50,142 @@ public class ConsoleCommandReader implements CommandReader {
             case "exit":
                 return new ExitCommand(application);
 
-            case "new":
-                return new NewGameCommand(application);
+            case "world":
+                return createCommandWorld(tokens);
 
-            case "load":
-                return createLoadGameCommand(tokens);
+            case "character":
+                return createCommandCharacter(tokens);
 
-            case "save":
-                return createSaveGameCommand(tokens);
+            case "game":
+                return createCommandGame(tokens);
 
-            case "quit":
-                return new QuitGameCommand(application.getGame());
-
-            case "move":
-                return createMoveCommand(tokens);
-
-            case "collect":
-                return new CollectItemsCommand(application.getGame());
-
-            case "use":
-                return createSelectWeaponCommand(tokens);
-
-            case "status":
-                return new ShowStatusCommand(application.getGame());
-
-            case "attack":
-                return new AttackCommand(application.getGame());
+            case "player":
+                return createCommandPlayer(tokens);
 
             default:
                 throw new InvalidCommandException(String.format("Unknown command %s", command));
         }
     }
 
-    private Command createLoadGameCommand(String[] tokens) {
+    private Command createCommandWorld(String[] tokens) {
         if (tokens.length < 2) {
-            throw new InvalidCommandException("You need to provide the name of the game to load");
+            throw new InvalidCommandException("Missing command argument");
         }
 
-        return new LoadGameCommand(application, tokens[1]);
+        switch (tokens[1]) {
+            case "list":
+                return new ListWorldsCommand(application);
+
+            default:
+                throw new InvalidCommandException(String.format("Unknown command"));
+        }
     }
 
-    private Command createSaveGameCommand(String[] tokens) {
+    private Command createCommandCharacter(String[] tokens) {
         if (tokens.length < 2) {
-            throw new InvalidCommandException("You need to provide the name of the game to save");
+            throw new InvalidCommandException("Missing command argument");
         }
 
-        return new SaveGameCommand(application, tokens[1]);
+        switch (tokens[1]) {
+            case "list":
+                return new ListCharactersCommand(application);
+
+            case "new":
+                return createCommandNewCharacter(tokens);
+
+            default:
+                throw new InvalidCommandException(String.format("Unknown command"));
+        }
     }
 
-    private Command createMoveCommand(String[] tokens) {
-        if (tokens.length < 2) {
-            throw new InvalidCommandException("You need to provide the direction to move to");
+    private Command createCommandNewCharacter(String[] tokens) {
+        if (tokens.length < 3) {
+            throw new InvalidCommandException("Missing command argument");
         }
 
-        final String direction = tokens[1];
+        return new NewCharacterCommand(application, tokens[2]);
+    }
+
+    private Command createCommandGame(String[] tokens) {
+        if (tokens.length < 2) {
+            throw new InvalidCommandException("Missing command argument");
+        }
+
+        switch (tokens[1]) {
+            case "new":
+                return createCommandNewGame(tokens);
+
+            case "load":
+                return createCommandLoadGame(tokens);
+
+            case "save":
+                return createCommandSaveGame(tokens);
+
+            case "status":
+                return new ShowStatusCommand(application.getGame());
+
+            case "quit":
+                return new QuitGameCommand(application.getGame());
+
+            default:
+                throw new InvalidCommandException(String.format("Unknown command"));
+        }
+    }
+
+    private Command createCommandNewGame(String[] tokens) {
+        if (tokens.length < 4) {
+            throw new InvalidCommandException("Missing command argument");
+        }
+
+        return new NewGameCommand(application, tokens[2], tokens[3]);
+    }
+
+    private Command createCommandLoadGame(String[] tokens) {
+        if (tokens.length < 3) {
+            throw new InvalidCommandException("Missing command argument");
+        }
+
+        return new LoadGameCommand(application, tokens[2]);
+    }
+
+    private Command createCommandSaveGame(String[] tokens) {
+        if (tokens.length < 3) {
+            throw new InvalidCommandException("Missing command argument");
+        }
+
+        return new SaveGameCommand(application, tokens[2]);
+    }
+
+    private Command createCommandPlayer(String[] tokens) {
+        if (tokens.length < 2) {
+            throw new InvalidCommandException("Missing command argument");
+        }
+
+        switch (tokens[1]) {
+            case "move":
+                return createCommandMovePlayer(tokens);
+
+            case "collect":
+                return new CollectItemsCommand(application.getGame());
+
+            case "use":
+                return createCommandSelectWeapon(tokens);
+
+            case "attack":
+                return new AttackCommand(application.getGame());
+
+            default:
+                throw new InvalidCommandException(String.format("Unknown command"));
+        }
+
+    }
+
+    private Command createCommandMovePlayer(String[] tokens) {
+        if (tokens.length < 3) {
+            throw new InvalidCommandException("Missing command argument");
+        }
+
+        final String direction = tokens[2];
 
         switch (direction) {
             case "north":
@@ -123,12 +205,12 @@ public class ConsoleCommandReader implements CommandReader {
         }
     }
 
-    private Command createSelectWeaponCommand(String[] tokens) {
-        if (tokens.length < 2) {
-            throw new InvalidCommandException("Which weapon do you wanna use?");
+    private Command createCommandSelectWeapon(String[] tokens) {
+        if (tokens.length < 3) {
+            throw new InvalidCommandException("Missing command argument");
         }
 
-        return new SelectWeaponCommand(application.getGame(), tokens[1]);
+        return new SelectWeaponCommand(application.getGame(), tokens[2]);
     }
 
 }

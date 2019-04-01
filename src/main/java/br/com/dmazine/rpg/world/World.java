@@ -1,7 +1,8 @@
-package br.com.dmazine.rpg.location;
+package br.com.dmazine.rpg.world;
 
 import br.com.dmazine.rpg.Console;
 import br.com.dmazine.rpg.Entity;
+import br.com.dmazine.rpg.location.Location;
 
 import java.util.LinkedList;
 import java.util.List;

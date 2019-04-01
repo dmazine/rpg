@@ -16,7 +16,7 @@ public class FileGameRepository implements GameRepository {
     }
 
     @Override
-    public void saveGame(String name, Game game) {
+    public void save(String name, Game game) {
         try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(buildFilePath(name)))) {
             outputStream.writeObject(game);
         } catch (Exception e) {
@@ -25,7 +25,7 @@ public class FileGameRepository implements GameRepository {
     }
 
     @Override
-    public Game loadGame(String name) {
+    public Game load(String name) {
         try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(buildFilePath(name)))) {
             return (Game) inputStream.readObject();
         } catch (Exception e) {
